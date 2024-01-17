@@ -142,7 +142,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
                             ),
                           ),
                           Container(
-                            color: Colors.black26,
+                            color: Colors.white.withOpacity(0.2),
                             alignment: Alignment.center,
                             padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
                             child: Row(
@@ -210,7 +210,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
     return Tab(
       icon: selectedCategory == category
           ? CircleAvatar(
-        backgroundColor: Colors.black45,
+        backgroundColor: Colors.white.withOpacity(0.2),
               child: Icon(
               widget.config.getIconForCategory(category),
                 color: Colors.white,

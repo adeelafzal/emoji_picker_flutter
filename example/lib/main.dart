@@ -100,6 +100,16 @@ class MyAppState extends State<MyApp> {
               offstage: !emojiShowing,
               child: SizedBox(
                 height: 358.36,
+                // decoration: BoxDecoration(
+                //     gradient: LinearGradient(
+                //       colors: [
+                //         Color(0xffC500D7).withOpacity(0.24),
+                //         Color(0xff4107B4).withOpacity(0.24),
+                //       ],
+                //       begin: Alignment.topLeft,
+                //       end: Alignment.bottomRight,
+                //     )
+                // ),
                 child:EmojiPicker(
                     // onEmojiSelected: (Category? category, Emoji emoji) {
                     // },
