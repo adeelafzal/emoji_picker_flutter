@@ -99,33 +99,29 @@ class MyAppState extends State<MyApp> {
             Offstage(
               offstage: !emojiShowing,
               child: SizedBox(
-                  height: 250,
-                  child: EmojiPicker(
+                height: 358.36,
+                child:EmojiPicker(
+                    // onEmojiSelected: (Category? category, Emoji emoji) {
+                    // },
                     textEditingController: _controller,
                     onBackspacePressed: _onBackspacePressed,
                     config: Config(
                       columns: 7,
-                      // Issue: https://github.com/flutter/flutter/issues/28894
-                      emojiSizeMax: 32 *
-                          (foundation.defaultTargetPlatform ==
-                                  TargetPlatform.iOS
-                              ? 1.30
-                              : 1.0),
+                      emojiSizeMax: 32 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.30 : 1.0), // Issue: https://github.com/flutter/flutter/issues/28894
                       verticalSpacing: 0,
                       horizontalSpacing: 0,
                       gridPadding: EdgeInsets.zero,
                       initCategory: Category.RECENT,
-                      bgColor: const Color(0xFFF2F2F2),
-                      indicatorColor: Colors.blue,
+                      bgColor: Colors.transparent,
+                      indicatorColor: Colors.transparent,
                       iconColor: Colors.grey,
-                      iconColorSelected: Colors.blue,
-                      backspaceColor: Colors.blue,
+                      iconColorSelected: Colors.white,
+                      backspaceColor: Colors.grey,
                       skinToneDialogBgColor: Colors.white,
                       skinToneIndicatorColor: Colors.grey,
                       enableSkinTones: true,
                       recentTabBehavior: RecentTabBehavior.RECENT,
                       recentsLimit: 28,
-                      replaceEmojiOnLimitExceed: false,
                       noRecents: const Text(
                         'No Recents',
                         style: TextStyle(fontSize: 20, color: Colors.black26),
@@ -134,10 +130,10 @@ class MyAppState extends State<MyApp> {
                       loadingIndicator: const SizedBox.shrink(),
                       tabIndicatorAnimDuration: kTabScrollDuration,
                       categoryIcons: const CategoryIcons(),
-                      buttonMode: ButtonMode.MATERIAL,
-                      checkPlatformCompatibility: true,
+                      buttonMode: foundation.defaultTargetPlatform == TargetPlatform.iOS ?ButtonMode.CUPERTINO:ButtonMode.MATERIAL,
                     ),
-                  )),
+                  ),
+              ),
             ),
           ],
         ),
