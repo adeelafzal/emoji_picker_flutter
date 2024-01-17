@@ -55,137 +55,110 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
     return LayoutBuilder(
       builder: (context, constraints) {
         final emojiSize = widget.config.getEmojiSize(constraints.maxWidth);
-        return Container(
-          height: 358.36,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              Color(0xffC500D7).withOpacity(0.24),
-              Color(0xff4107B4).withOpacity(0.24),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  // logic.emojiClicked.value=false;
+        return Column(
+          children: [
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: TextField(
+                clipBehavior: Clip.antiAlias,
+                onChanged: (value) async {
+                  if (value.trim().isEmpty) {
+                    filterEmojiEntities = [];
+                  } else {
+                    filterEmojiEntities = await EmojiPickerUtils()
+                        .searchEmoji(value, defaultEmojiSet);
+                  }
+                  if (mounted) setState(() {});
                 },
-                child: Container(
-                  width: 60.11,
-                  height: 4.47,
-                  margin: EdgeInsets.symmetric(vertical: 16),
-                  decoration: ShapeDecoration(
-                    color: Colors.white.withOpacity(0.1599999964237213),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search, color: Color(0xFF90749B)),
+                  filled: true,
+                  hintText: "Search Emoji",
+                  hintStyle: TextStyle(
+                    color: Color(0xFF90749B),
+                    fontSize: 17,
+                    fontFamily: 'SF Pro Text',
+                    fontWeight: FontWeight.w400,
+                    height: 0.07,
                   ),
+                  fillColor: Colors.black26,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                      borderSide: BorderSide.none),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                child: TextField(
-                  clipBehavior: Clip.antiAlias,
-                  onChanged: (value) async {
-                    if (value.trim().isEmpty) {
-                      filterEmojiEntities = [];
-                    } else {
-                      filterEmojiEntities = await EmojiPickerUtils()
-                          .searchEmoji(value, defaultEmojiSet);
-                    }
-                    if (mounted) setState(() {});
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Color(0xFF90749B)),
-                    filled: true,
-                    hintText: "Search Emoji",
-                    hintStyle: TextStyle(
-                      color: Color(0xFF90749B),
-                      fontSize: 17,
-                      fontFamily: 'SF Pro Text',
-                      fontWeight: FontWeight.w400,
-                      height: 0.07,
-                    ),
-                    fillColor: Colors.black26,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                        borderSide: BorderSide.none),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Expanded(
-                child: EmojiContainer(
-                  color: Colors.transparent,
-                  buttonMode: widget.config.buttonMode,
-                  child: filterEmojiEntities.isNotEmpty
-                      ? GridView.count(
-                          scrollDirection: Axis.vertical,
-                          controller: _scrollController,
-                          primary: false,
-                          padding: widget.config.gridPadding,
-                          crossAxisCount: widget.config.columns,
-                          mainAxisSpacing: widget.config.verticalSpacing,
-                          crossAxisSpacing: widget.config.horizontalSpacing,
-                          children: [
-                              for (int i = 0;
-                                  i < filterEmojiEntities.length;
-                                  i++)
-                                EmojiCell.fromConfig(
-                                  emoji: filterEmojiEntities[i],
-                                  emojiSize: emojiSize,
-                                  index: i,
-                                  onEmojiSelected: (category, emoji) {
-                                    closeSkinToneOverlay();
-                                    widget.state
-                                        .onEmojiSelected(category, emoji);
-                                  },
-                                  onSkinToneDialogRequested:
-                                      _openSkinToneDialog,
-                                  config: widget.config,
-                                )
-                            ])
-                      : Column(
-                          children: [
-                            Flexible(
-                              child: PageView.builder(
-                                itemCount: widget.state.categoryEmoji.length,
-                                controller: _pageController,
-                                onPageChanged: (index) {
-                                  _tabController.animateTo(
-                                    index,
-                                    duration:
-                                        widget.config.tabIndicatorAnimDuration,
-                                  );
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: EmojiContainer(
+                color: Colors.transparent,
+                buttonMode: widget.config.buttonMode,
+                child: filterEmojiEntities.isNotEmpty
+                    ? GridView.count(
+                        scrollDirection: Axis.vertical,
+                        controller: _scrollController,
+                        primary: false,
+                        padding: widget.config.gridPadding,
+                        crossAxisCount: widget.config.columns,
+                        mainAxisSpacing: widget.config.verticalSpacing,
+                        crossAxisSpacing: widget.config.horizontalSpacing,
+                        children: [
+                            for (int i = 0;
+                                i < filterEmojiEntities.length;
+                                i++)
+                              EmojiCell.fromConfig(
+                                emoji: filterEmojiEntities[i],
+                                emojiSize: emojiSize,
+                                index: i,
+                                onEmojiSelected: (category, emoji) {
+                                  closeSkinToneOverlay();
+                                  widget.state
+                                      .onEmojiSelected(category, emoji);
                                 },
-                                itemBuilder: (context, index) => _buildPage(
-                                    emojiSize,
-                                    widget.state.categoryEmoji[index]),
-                              ),
+                                onSkinToneDialogRequested:
+                                    _openSkinToneDialog,
+                                config: widget.config,
+                              )
+                          ])
+                    : Column(
+                        children: [
+                          Flexible(
+                            child: PageView.builder(
+                              itemCount: widget.state.categoryEmoji.length,
+                              controller: _pageController,
+                              onPageChanged: (index) {
+                                _tabController.animateTo(
+                                  index,
+                                  duration:
+                                      widget.config.tabIndicatorAnimDuration,
+                                );
+                              },
+                              itemBuilder: (context, index) => _buildPage(
+                                  emojiSize,
+                                  widget.state.categoryEmoji[index]),
                             ),
-                            Container(
-                              color: Colors.black26,
-                              height: 50,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: _buildTabBar(context),
-                                  ),
-                                  _buildBackspaceButton(),
-                                ],
-                              ),
+                          ),
+                          Container(
+                            color: Colors.black26,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: _buildTabBar(context),
+                                ),
+                                _buildBackspaceButton(),
+                              ],
                             ),
-                          ],
-                        ),
-                ),
+                          ),
+                        ],
+                      ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
@@ -198,6 +171,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
           indicatorColor: widget.config.indicatorColor,
           unselectedLabelColor: widget.config.iconColor,
           controller: _tabController,
+          dividerColor: Colors.transparent,
           labelPadding: EdgeInsets.zero,
           onTap: (index) {
             closeSkinToneOverlay();
@@ -236,7 +210,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
     return Tab(
       icon: selectedCategory == category
           ? CircleAvatar(
-        backgroundColor: Colors.black45,
+        backgroundColor: Colors.black54,
               child: Icon(
               widget.config.getIconForCategory(category),
                 color: Colors.white,
