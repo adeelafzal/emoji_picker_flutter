@@ -210,7 +210,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
     return Tab(
       icon: selectedCategory == category
           ? CircleAvatar(
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.black45,
               child: Icon(
               widget.config.getIconForCategory(category),
                 color: Colors.white,
