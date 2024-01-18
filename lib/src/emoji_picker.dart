@@ -119,6 +119,7 @@ class EmojiPicker extends StatefulWidget {
     this.scrollController,
     this.onEmojiSelected,
     this.onBackspacePressed,
+    required this.filterEmojiEntities,
     this.config = const Config(),
     this.customWidget,
   }) : super(key: key);
@@ -143,6 +144,7 @@ class EmojiPicker extends StatefulWidget {
 
   /// Config for customizations
   final Config config;
+  final List<Emoji> filterEmojiEntities;
 
   @override
   EmojiPickerState createState() => EmojiPickerState();
@@ -194,7 +196,7 @@ class EmojiPickerState extends State<EmojiPicker> {
       return widget.config.loadingIndicator;
     }
     return widget.customWidget == null
-        ? DefaultEmojiPickerView(widget.config, _state)
+        ? DefaultEmojiPickerView(widget.config, _state,widget.filterEmojiEntities)
         : widget.customWidget!(widget.config, _state);
   }
 

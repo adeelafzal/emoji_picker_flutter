@@ -115,6 +115,7 @@ class MyAppState extends State<MyApp> {
                     // },
                     textEditingController: _controller,
                     onBackspacePressed: _onBackspacePressed,
+                    filterEmojiEntities: [],
                     config: Config(
                       columns: 7,
                       emojiSizeMax: 32 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.30 : 1.0), // Issue: https://github.com/flutter/flutter/issues/28894
