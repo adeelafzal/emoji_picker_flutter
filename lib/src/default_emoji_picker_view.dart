@@ -19,6 +19,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
   List<Emoji> filterEmojiEntities = [];
   late PageController _pageController;
   Category? selectedCategory = Category.RECENT;
+  bool hasResults = true;
   late TabController _tabController;
   late final _scrollController = ScrollController();
 
@@ -56,26 +57,36 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
       builder: (context, constraints) {
         final emojiSize = widget.config.getEmojiSize(constraints.maxWidth);
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: TextField(
                 clipBehavior: Clip.antiAlias,
                 onChanged: (value) async {
                   if (value.trim().isEmpty) {
                     filterEmojiEntities = [];
+                    _pageController = PageController(initialPage: 0)..addListener(closeSkinToneOverlay);
+                    selectedCategory = Category.RECENT;
+                    if(mounted)setState(() {});
                   } else {
                     filterEmojiEntities = await EmojiPickerUtils()
                         .searchEmoji(value, defaultEmojiSet);
+                    if(filterEmojiEntities.isEmpty){
+                      hasResults = false;
+                    }else{
+                      hasResults = true;
+                    }
+                    selectedCategory = Category.SEARCH;
                   }
                   if (mounted) setState(() {});
                 },
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, color: Color(0xFF90749B)),
+                  prefixIcon: const Icon(Icons.search, color: Color(0xFF90749B)),
                   filled: true,
                   hintText: "Search Emoji",
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     color: Color(0xFF90749B),
                     fontSize: 17,
                     fontFamily: 'SF Pro Text',
@@ -91,12 +102,32 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 16),
+             Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Text(
+                selectedCategory!.name.toUpperCase(),
+                style: const TextStyle(
+                  color: Color(0xFF5F5E5F),
+                  fontSize: 12,
+                  fontFamily: 'SF Pro Text',
+                  fontWeight: FontWeight.w600,
+                  height: 0.10,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
             Expanded(
               child: EmojiContainer(
                 color: Colors.transparent,
                 buttonMode: widget.config.buttonMode,
-                child: filterEmojiEntities.isNotEmpty
+                child: !hasResults&&filterEmojiEntities.isEmpty?const Center(
+                  child: Text(
+                    'No Result',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ):filterEmojiEntities.isNotEmpty
                     ? GridView.count(
                         scrollDirection: Axis.vertical,
                         controller: _scrollController,
@@ -144,7 +175,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
                           Container(
                             color: Colors.white.withOpacity(0.2),
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
                             child: Row(
                               children: [
                                 Expanded(

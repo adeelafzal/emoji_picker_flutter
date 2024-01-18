@@ -98,18 +98,18 @@ class MyAppState extends State<MyApp> {
                 )),
             Offstage(
               offstage: !emojiShowing,
-              child: SizedBox(
+              child: Container(
                 height: 358.36,
-                // decoration: BoxDecoration(
-                //     gradient: LinearGradient(
-                //       colors: [
-                //         Color(0xffC500D7).withOpacity(0.24),
-                //         Color(0xff4107B4).withOpacity(0.24),
-                //       ],
-                //       begin: Alignment.topLeft,
-                //       end: Alignment.bottomRight,
-                //     )
-                // ),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xffC500D7).withOpacity(0.24),
+                        Color(0xff4107B4).withOpacity(0.24),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    )
+                ),
                 child:EmojiPicker(
                     // onEmojiSelected: (Category? category, Emoji emoji) {
                     // },
@@ -125,7 +125,7 @@ class MyAppState extends State<MyApp> {
                       bgColor: Colors.transparent,
                       indicatorColor: Colors.transparent,
                       iconColor: Colors.grey,
-                      iconColorSelected: Colors.white,
+                      iconColorSelected: Colors.grey,
                       backspaceColor: Colors.grey,
                       skinToneDialogBgColor: Colors.white,
                       skinToneIndicatorColor: Colors.grey,

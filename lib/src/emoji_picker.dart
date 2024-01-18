@@ -39,6 +39,7 @@ enum Category {
 
   /// Flag emojis
   FLAGS,
+  SEARCH,
 }
 
 /// Extension on Category enum to get its name
@@ -64,6 +65,8 @@ extension CategoryExtension on Category {
         return 'symbols';
       case Category.FLAGS:
         return 'flags';
+        case Category.SEARCH:
+        return 'Search Result';
     }
   }
 }
