@@ -212,7 +212,6 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
   Widget _buildTabBar(BuildContext context) => SizedBox(
         height: _tabBarHeight,
         child: TabBar(
-          isScrollable:true,
           labelColor: widget.config.iconColorSelected,
           indicatorColor: widget.config.indicatorColor,
           unselectedLabelColor: widget.config.iconColor,
